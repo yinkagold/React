@@ -12,16 +12,6 @@ class App extends Component {
       { id: 4, value: 0 }
     ]
   };
-
-  constructor() {
-    super();
-    console.log("App-Constructor");
-  }
-
-  componentDidMount() {
-    //Ajax call
-    console.log("App-Component");
-  }
   handleReset = () => {
     const counters = this.state.counters.map(c => {
       c.value = 0; // reset value to 0
@@ -37,12 +27,19 @@ class App extends Component {
     this.setState({ counters });
     // console.log(this.state.counters[index]);
   };
+  handleDecrement = counter => {
+    const counters = [...this.state.counters]; // here the array is cloned
+    const index = counters.indexOf(counter);
+    counters[index] = { ...counter };
+    counters[index].value--;
+    this.setState({ counters });
+  };
+
   handleDelete = countrerId => {
     const counters = this.state.counters.filter(c => c.id !== countrerId);
     this.setState({ counters });
   };
   render() {
-    console.log("App-Render");
     return (
       <React.Fragment>
         <NavBar
@@ -53,6 +50,7 @@ class App extends Component {
             counters={this.state.counters}
             onReset={this.handleReset}
             onIncrement={this.handleIncrement}
+            onDecrement={this.handleDecrement}
             onDelete={this.handleDelete}
           />
         </main>
