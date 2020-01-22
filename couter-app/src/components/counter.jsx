@@ -1,9 +1,20 @@
 import React, { Component } from "react";
 
 class Counter extends Component {
+  componentDidUpdate(prevProps, prevState) {
+    console.log("prevProps", prevProps);
+    console.log("prevState", prevState);
+    if (prevProps.counter.value !== this.props.counter.value) {
+      //Ajax call and get new data from the server
+    }
+  }
+
+  componentWillUnmount() {
+    console.log("Counter Unmount");
+  }
   // Here we remove the state property and use the props to display data and notify changes
   render() {
-    console.log("props", this.props);
+    console.log("Counter-Render");
     return (
       <div>
         {this.props.children}
