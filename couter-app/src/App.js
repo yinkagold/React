@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import Counters from "./components/counters";
-import Counter from "./components/counter";
 import NavBar from "./components/navbar";
 import "./App.css";
 
@@ -13,6 +12,16 @@ class App extends Component {
       { id: 4, value: 0 }
     ]
   };
+
+  constructor() {
+    super();
+    console.log("App-Constructor");
+  }
+
+  componentDidMount() {
+    //Ajax call
+    console.log("App-Component");
+  }
   handleReset = () => {
     const counters = this.state.counters.map(c => {
       c.value = 0; // reset value to 0
@@ -33,6 +42,7 @@ class App extends Component {
     this.setState({ counters });
   };
   render() {
+    console.log("App-Render");
     return (
       <React.Fragment>
         <NavBar
