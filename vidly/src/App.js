@@ -4,6 +4,7 @@ import Movies from "./components/movies";
 import Customers from "./components/customer";
 import Rentals from "./components/rentals";
 import NotFound from "./components/notFound";
+import LoginForm from "./components/loginForm";
 import "./App.css";
 import NavBar from "./components/navBar";
 import MovieForm from "./components/movieForm";
@@ -14,7 +15,7 @@ function App() {
       <NavBar />
       <main className="container">
         <Switch>
-          <Route path="/movies/:id" component={MovieForm}></Route>
+          <Route path="/login" component={LoginForm}></Route>
           <Route path="/movies/:id" component={MovieForm}></Route>
           <Route path="/movies" component={Movies}></Route>
           <Route path="/customers" component={Customers}></Route>
