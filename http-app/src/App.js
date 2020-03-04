@@ -22,18 +22,30 @@ class App extends Component {
 
   handleUpdate = async post => {
     post.title = "UPDATED";
-    await axios.put(apiEndpoint + "/" + post.id, post);
     const posts = [...this.state.posts];
     const index = posts.indexOf(posts);
     posts[index] = { ...post };
+    await axios.put(apiEndpoint + "/" + post.id, post);
     console.log(posts);
     // axios.patch(apiEndpoint + '/' + post.id, { title: post.title });
   };
 
   handleDelete = async post => {
-    await axios.delete(apiEndpoint + "/" + post.id);
-    const posts = this.state.posts.filter(p => p.id);
+    // this is called when the call to server fails
+    const originalPosts = this.state.posts;
+    //Here we update the UI first
+    const posts = this.state.posts.filter(p => p.id !== post.id);
     this.setState({ posts });
+
+    // then call the server
+    try {
+      await axios.delete(apiEndpoint + "/" + post.id);
+      throw new Error("");
+    } catch (ex) {
+      alert("something failed while deleting");
+      this.setState({ posts: originalPosts });
+    }
+    console.log(posts);
   };
 
   render() {
