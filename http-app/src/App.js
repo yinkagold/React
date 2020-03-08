@@ -1,20 +1,22 @@
 import React, { Component } from "react";
-import axios from "axios";
+import { ToastContainer } from "react-toastify";
+import http from "./services/httpService";
+import config from "./config.json";
+import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
 
-const apiEndpoint = "http://jsonplaceholder.typicode.com/posts";
 class App extends Component {
   state = {
     posts: []
   };
 
   async componentDidMount() {
-    const { data: posts } = await axios.get(apiEndpoint);
+    const { data: posts } = await http.get(config.apiEndpoint);
     this.setState({ posts });
   }
   handleAdd = async () => {
     const obj = { title: "a", body: "b" };
-    const { data: post } = await axios.post(apiEndpoint, obj);
+    const { data: post } = await http.post(config.apiEndpoint, obj);
 
     const posts = [post, ...this.state];
     this.setState({ posts });
@@ -25,9 +27,9 @@ class App extends Component {
     const posts = [...this.state.posts];
     const index = posts.indexOf(posts);
     posts[index] = { ...post };
-    await axios.put(apiEndpoint + "/" + post.id, post);
+    await http.put(config.apiEndpoint + "/" + post.id, post);
     console.log(posts);
-    // axios.patch(apiEndpoint + '/' + post.id, { title: post.title });
+    // http.patch(config.apiEndpoint + '/' + post.id, { title: post.title });
   };
 
   handleDelete = async post => {
@@ -39,18 +41,18 @@ class App extends Component {
 
     // then call the server
     try {
-      await axios.delete(apiEndpoint + "/" + post.id);
-      throw new Error("");
+      await http.delete("s" + config.apiEndpoint + "/" + post.id);
     } catch (ex) {
-      alert("something failed while deleting");
+      if (ex.response && ex.response.status === 404)
+        alert("This post has already been deleted.");
       this.setState({ posts: originalPosts });
     }
-    console.log(posts);
   };
 
   render() {
     return (
       <React.Fragment>
+        <ToastContainer />
         <button className="btn btn-primary" onClick={this.handleAdd}>
           Add
         </button>
